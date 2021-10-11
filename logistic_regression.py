@@ -55,9 +55,25 @@ class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
                              "classification problems")
 
 
-        # TODO insert your code here
+        #Dans l'ordre il y a w0, w1 et w2
+        theta = np.matrix('0; 0; 0')
+        W = np.matrix('0, 0')
 
-        return self
+        N = len(y)
+
+        for _ in range(n_iter):
+            sum = 0
+            #Boucle pour le calcul de la somme
+            for i in range(N):
+                x = X[i, :].T
+                x_prime = np.vstack([np.matrix('1'), x])
+                sum = sum + ((1/(1 + np.exp(-theta[0] - np.matmul(W, x)))) - y[i])[0,0] * x_prime
+            loss = sum/N
+            theta = theta - learning_rate*loss
+            W[0] = theta[1]
+            W[1] = theta[2]
+
+        return theta
 
 
     def predict(self, X):
