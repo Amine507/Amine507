@@ -36,7 +36,7 @@ if __name__ == "__main__":
         knn_classifier = KNeighborsClassifier(n_neighbors = n).fit(X_l, y_l) 
         y_p = knn_classifier.predict(X_t) 
         acc_scores[i] = accuracy_score(y_t, y_p)  # table of scores
-        #plot_boundary('n_neighbors={}'.format(value), estimator,X_t, y_t, mesh_step_size=0.1, title="")
+        plot_boundary('n_neighbors={}'.format(n_neighbors[i]), knn_classifier,X_l, y_l, mesh_step_size=0.1, title="k-NN with min_samples_split="+str(n))
     print("\n scores :\n \n", acc_scores)
 
     # ten-fold cross validation

@@ -12,6 +12,7 @@ from plot import plot_boundary
 from data import make_balanced_dataset, make_unbalanced_dataset
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn import tree
 
 
 if __name__ == "__main__":
@@ -41,4 +42,6 @@ if __name__ == "__main__":
         DecisionTree = DecisionTreeClassifier(min_samples_split=mss).fit(X_l, y_l) #create the tree
         y_p = DecisionTree.predict(X_t) #test the tree
         acc_scores[i] = accuracy_score(y_t, y_p)  # table of scores
+        plt.figure(figsize=(25,15))
+        tree.plot_tree(DecisionTree, filled=True)
         plot_boundary('dt_min_samples'+str(i), DecisionTree,X_t, y_t, mesh_step_size=0.1, title="Decision Tree with min_samples_split="+str(mss))
