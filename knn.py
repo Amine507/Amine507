@@ -45,7 +45,6 @@ if __name__ == "__main__":
     subset_neighbors = [(5*(j+1)) for j in range(100)]
 
     #on teste pour un nombre de voisins qui va de 5 à 500
-   
     for k, n in enumerate(subset_neighbors):
         knn_classifier = KNeighborsClassifier(n_neighbors = n)
         cross_scores = cross_val_score(knn_classifier, X, y, cv = 10)
