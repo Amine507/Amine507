@@ -23,6 +23,7 @@ class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
         self.learning_rate = learning_rate
 
 
+
     def fit(self, X, y):
         """Fit a logistic regression models on (X, y)
 
@@ -61,19 +62,24 @@ class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
 
         N = len(y)
 
-        for _ in range(n_iter):
+        for _ in range(self.n_iter):
             sum = 0
             #Boucle pour le calcul de la somme
             for i in range(N):
                 x = X[i, :].T
                 x_prime = np.vstack([np.matrix('1'), x])
-                sum = sum + ((1/(1 + np.exp(-theta[0] - np.matmul(W, x)))) - y[i])[0,0] * x_prime
+                sum = sum + ((1/(1 + np.exp(-theta[0,0] - np.matmul(W, x)))) - y[i])[0,0] * x_prime
             loss = sum/N
-            theta = theta - learning_rate*loss
-            W[0] = theta[1]
-            W[1] = theta[2]
+            theta = theta - self.learning_rate*loss
+            w1 = theta[1,0]
+            w2 = theta[2,0]
+            W = np.matrix([[w1, w2]])
 
-        return theta
+        self.w0 = theta[0,0]
+        self.w1 = theta[1,0]
+        self.w2 = theta[2,0]
+        
+        return self
 
 
     def predict(self, X):
