@@ -16,13 +16,10 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.base import BaseEstimator
 from sklearn.base import ClassifierMixin
 
-<<<<<<< Updated upstream
 def sigmoid(x):
     sig = 1 / (1 + math.exp(-x))
     return sig
 
-=======
->>>>>>> Stashed changes
 class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
 
     def __init__(self, n_iter=10, learning_rate=1):
@@ -62,15 +59,15 @@ class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
                              "classification problems")
 
 
-        self.theta_t = np.ones(X.shape[1] + 1)
+        self.theta_t = [0, -1, -1]
         
         for i in range(self.n_iter) :
-            x_theta_prod = np.matmul(X, self.theta_t[1:]) - self.theta_t[0]
+            x_theta_prod = np.matmul(X, self.theta_t[1:]) + self.theta_t[0]
             prob_know_x_thet = np.array([sigmoid(xi) for xi in x_theta_prod]) - y
             x_prime = np.c_[np.ones(X.shape[0]),X]
             p_mult_x_prime = np.multiply(np.reshape(prob_know_x_thet, [X.shape[0], 1]), x_prime)
             grad_theta = np.mean(p_mult_x_prime, axis=0)
-            self.theta_t -= grad_theta
+            self.theta_t -= self.learning_rate*grad_theta
         
 
         return self
@@ -113,10 +110,56 @@ class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
         """
         
         x_theta_prod = np.matmul(X, self.theta_t[1:]) - self.theta_t[0]
-        one_prob_know_x_thet = np.array([sigmoid(xi) for xi in x_theta_prod])
+        one_prob_know_x_thet = 1 - np.array([sigmoid(xi) for xi in x_theta_prod])
         zero_prob_know_x_thet = 1 - one_prob_know_x_thet
         
         return np.c_[one_prob_know_x_thet, zero_prob_know_x_thet]
 
 if __name__ == "__main__":
-    pass
+    lrc = LogisticRegressionClassifier(n_iter=10, learning_rate=0.5)
+    acc_scores = np.zeros([5, 1])
+    
+    for i in range(5):
+        X, y = make_unbalanced_dataset(3000, 40+i)
+        X_l = X[:1000]
+        y_l = y[:1000]
+        X_t = X[1000:]
+        y_t = y[1000:]
+        lrc.fit(X_l, y_l)
+        
+        y_p = lrc.predict(X_t)
+        acc_scores[i] = accuracy_score(y_t, y_p)
+        plot_boundary("lrc_figs/lrc_"+str(i), lrc, X_t, y_t)
+
+    mean_acc_scores = np.mean(acc_scores)
+    std_acc_scores = np.std(acc_scores)
+    
+    
+    n_iterations = np.arange(0, 220, 20)
+    acc_scores = np.zeros(len(n_iterations))
+    X, y = make_unbalanced_dataset(3000, 40)
+    X_l = X[:1000]
+    y_l = y[:1000]
+    X_t = X[1000:]
+    y_t = y[1000:]
+    for i, n_it in enumerate(n_iterations):
+        lrc = LogisticRegressionClassifier(n_iter=n_it, learning_rate=0.5)
+        lrc.fit(X_l, y_l)
+        
+        y_p = lrc.predict(X_t)
+        acc_scores[i] = accuracy_score(y_t, y_p)
+        plot_boundary("lrc_figs/lrc_iter_"+str(n_it), lrc, X_t, y_t)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
