@@ -45,4 +45,4 @@ if __name__ == "__main__":
     for j in range(5):
         for i, mss in enumerate(min_samples_split):
             acc_scores[i], DecisionTree, X_t, y_t = dt_score(40+j, mss)  # table of scores
-            plot_boundary('seed_='+ str(40+j) + 'min_sample_split_=' + str(mss) + str(i), DecisionTree,X_t, y_t, mesh_step_size=0.1, title="Decision Tree with min_samples_split="+str(mss))
+            plot_boundary('seed_='+ str(40+j) + 'min_sample_split_=' + str(mss) +"_"+ str(i), DecisionTree,X_t, y_t, mesh_step_size=0.1, title="Decision Tree with min_samples_split="+str(mss))

@@ -45,12 +45,8 @@ if __name__ == "__main__":
     subset_scores = np.zeros(100)
 
     #on teste pour un nombre de voisins qui va de 5 à 500
-<<<<<<< Updated upstream
-    for k, n in enumerate(subset_neighbors):
-=======
    
     for k, n in enumerate(n_neighbors):
->>>>>>> Stashed changes
         knn_classifier = KNeighborsClassifier(n_neighbors = n)
         cross_scores = cross_val_score(knn_classifier, X, y, cv = 10)
         subset_scores[k] = np.mean(cross_scores)
