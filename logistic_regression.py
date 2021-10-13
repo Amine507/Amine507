@@ -87,7 +87,7 @@ class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
             The predicted classes, or the predict values.
         """
         
-        x_theta_prod = np.matmul(X, self.theta_t[1:]) - self.theta_t[0]
+        x_theta_prod = np.matmul(X, self.theta_t[1:]) + self.theta_t[0]
         prob_know_x_thet = np.array([sigmoid(xi) for xi in x_theta_prod])
         predict = lambda p : 1 if (p > 0.5) else 0
         
@@ -109,14 +109,14 @@ class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
             by lexicographic order.
         """
         
-        x_theta_prod = np.matmul(X, self.theta_t[1:]) - self.theta_t[0]
+        x_theta_prod = np.matmul(X, self.theta_t[1:]) + self.theta_t[0]
         one_prob_know_x_thet = 1 - np.array([sigmoid(xi) for xi in x_theta_prod])
         zero_prob_know_x_thet = 1 - one_prob_know_x_thet
         
         return np.c_[one_prob_know_x_thet, zero_prob_know_x_thet]
 
 if __name__ == "__main__":
-    lrc = LogisticRegressionClassifier(n_iter=10, learning_rate=0.5)
+    lrc = LogisticRegressionClassifier(n_iter=10, learning_rate=1)
     acc_scores = np.zeros([5, 1])
     
     for i in range(5):
