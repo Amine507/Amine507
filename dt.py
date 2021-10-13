@@ -14,6 +14,17 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn import tree
 
+def dt_score(seed, mss):
+    X, y = make_unbalanced_dataset(n_points, seed)
+
+    X_l = X[:1000]
+    X_t = X[1000:]
+    y_l = y[:1000]
+    y_t = y[1000:]
+
+    DecisionTree = DecisionTreeClassifier(min_samples_split=mss).fit(X_l, y_l) #create the tree
+    y_p = DecisionTree.predict(X_t) #test the tree
+    return (accuracy_score(y_t, y_p), DecisionTree, X_t, y_t)  # table of scores
 
 if __name__ == "__main__":
 
@@ -25,23 +36,13 @@ if __name__ == "__main__":
     #crée 3000 points avec une valeur associée à chaque point
     #X matrice 3000x2 avec les coord de chaque point
     #y liste 3000 valeurs correspondant à chaque point
-    X, y = make_unbalanced_dataset(n_points, 50)
-
-  
-    # 1000 samples for the training, 2000 for the test
-    #X_l matrice 1000x2 des points qui ont servi à l'entrainement
-    #X_t matrice 1000x2 des points qui ont servi au test
-    #y_l liste 1000 des valeurs de points d'entrainement
-    #y_t liste 2000 des valeurs de points de test
-    X_l = X[:1000]
-    X_t = X[1000:]
-    y_l = y[:1000]
-    y_t = y[1000:]
+    
 
     for i, mss in enumerate(min_samples_split):
-        DecisionTree = DecisionTreeClassifier(min_samples_split=mss).fit(X_l, y_l) #create the tree
-        y_p = DecisionTree.predict(X_t) #test the tree
-        acc_scores[i] = accuracy_score(y_t, y_p)  # table of scores
-        plt.figure(figsize=(25,15))
-        tree.plot_tree(DecisionTree, filled=True)
+        acc_scores[i], DecisionTree, X_t, y_t = dt_score(40, mss)  # table of scores
         plot_boundary('dt_min_samples'+str(i), DecisionTree,X_t, y_t, mesh_step_size=0.1, title="Decision Tree with min_samples_split="+str(mss))
+
+    for j in range(5):
+        for i, mss in enumerate(min_samples_split):
+            acc_scores[i], DecisionTree, X_t, y_t = dt_score(40+j, mss)  # table of scores
+            plot_boundary('seed_='+ str(40+j) + 'min_sample_split_=' + str(mss) + str(i), DecisionTree,X_t, y_t, mesh_step_size=0.1, title="Decision Tree with min_samples_split="+str(mss))

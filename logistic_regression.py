@@ -16,10 +16,13 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.base import BaseEstimator
 from sklearn.base import ClassifierMixin
 
+<<<<<<< Updated upstream
 def sigmoid(x):
     sig = 1 / (1 + math.exp(-x))
     return sig
 
+=======
+>>>>>>> Stashed changes
 class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
 
     def __init__(self, n_iter=10, learning_rate=1):
