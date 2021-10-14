@@ -116,7 +116,7 @@ class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
         return np.c_[one_prob_know_x_thet, zero_prob_know_x_thet]
 
 if __name__ == "__main__":
-    lrc = LogisticRegressionClassifier(n_iter=10, learning_rate=1)
+    lrc = LogisticRegressionClassifier(n_iter=30, learning_rate=0.8)
     acc_scores = np.zeros([5, 1])
     
     for i in range(5):
@@ -129,12 +129,12 @@ if __name__ == "__main__":
         
         y_p = lrc.predict(X_t)
         acc_scores[i] = accuracy_score(y_t, y_p)
-        plot_boundary("lrc_figs/lrc_"+str(i), lrc, X_t, y_t)
+        plot_boundary("lrc_figs/lrc_"+str(i), lrc, X_t, y_t, title="Logistic regression decision boundary")
 
     mean_acc_scores = np.mean(acc_scores)
     std_acc_scores = np.std(acc_scores)
     
-    
+
     n_iterations = np.arange(0, 220, 20)
     acc_scores = np.zeros(len(n_iterations))
     X, y = make_unbalanced_dataset(3000, 40)
@@ -148,7 +148,7 @@ if __name__ == "__main__":
         
         y_p = lrc.predict(X_t)
         acc_scores[i] = accuracy_score(y_t, y_p)
-        plot_boundary("lrc_figs/lrc_iter_"+str(n_it), lrc, X_t, y_t)
+        plot_boundary("lrc_figs/lrc_iter_"+str(n_it), lrc, X_t, y_t, title="Decision boundary with n_iterations=" + str(n_it))
         
         
         
