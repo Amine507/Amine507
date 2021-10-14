@@ -49,7 +49,6 @@ def q3 (seed, n_neigh, n_fit):
 
     return sum_accuracy/10
 
-
 if __name__ == "__main__":
 
     n_points = 3000
@@ -87,7 +86,15 @@ if __name__ == "__main__":
         plt.plot(subset_neighbors, results)
         optimal_n.append(np.argmax(results))
         print("\n Optimal n : ", np.argmax(results), "for training set size of : ", i)
+        plt.title('Accuracy for ' + str(i))
+        plt.xlabel('Number of neighbours')
+        plt.ylabel('Accuracy (%)')
         plt.savefig('accuracy_' + str(i) + '.pdf')
+        plt.clf()
 
     plt.plot(training_set_sizes, optimal_n)
+    plt.title('Optimal number of neighbours')
+    plt.xlabel('Training set size')
+    plt.ylabel('Optimal number of neighbours')
     plt.savefig('optimal_n.pdf')
+    plt.clf()
