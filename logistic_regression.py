@@ -59,9 +59,12 @@ class LogisticRegressionClassifier(BaseEstimator, ClassifierMixin):
                              "classification problems")
 
 
+        # Definition of the initial value of theta
         self.theta_t = [0, -1, -1]
         
+        #Compute the gradietn descent
         for i in range(self.n_iter) :
+            # Compute w0 + w1*x1 + w2*x2
             x_theta_prod = np.matmul(X, self.theta_t[1:]) + self.theta_t[0]
             prob_know_x_thet = np.array([sigmoid(xi) for xi in x_theta_prod]) - y
             x_prime = np.c_[np.ones(X.shape[0]),X]
@@ -119,6 +122,7 @@ if __name__ == "__main__":
     lrc = LogisticRegressionClassifier(n_iter=30, learning_rate=0.8)
     acc_scores = np.zeros([5, 1])
     
+    # Mean accuracies over five generations of the dataset
     for i in range(5):
         X, y = make_unbalanced_dataset(3000, 40+i)
         X_l = X[:1000]
@@ -135,6 +139,7 @@ if __name__ == "__main__":
     std_acc_scores = np.std(acc_scores)
     
 
+    # Study of the effect of the number of iterations
     n_iterations = np.arange(0, 220, 20)
     acc_scores = np.zeros(len(n_iterations))
     X, y = make_unbalanced_dataset(3000, 40)
