@@ -55,40 +55,45 @@ if __name__ == "__main__":
     n_neighbors = [1, 5, 50, 100 ,500]
     acc_scores = np.zeros(len(n_neighbors))
 
+    # Decision boundary plots
+
     for i, n in enumerate(n_neighbors):
         acc_scores[i], knn_classifier, X_l, y_l = q1(50, n)
-        plot_boundary('n_neighbors={}'.format(n_neighbors[i]), knn_classifier,X_l, y_l, mesh_step_size=0.1, title="k-NN with min_samples_split="+str(n))
+        plot_boundary('n_neighbors={}'.format(n_neighbors[i]), knn_classifier,X_l, y_l, mesh_step_size=0.1, title="k-NN with number of neighbors = "+str(n))
     print("\n scores :\n \n", acc_scores)
 
-    # ten-fold cross validation
-   
+    # Ten-fold cross validation
+
     subset_scores = np.zeros(len(n_neighbors))
-   
+
     for k, n in enumerate(n_neighbors):
         subset_scores[k] = q2(50, n)
 
     optimal_n = np.argmax(subset_scores)
-    print("\n optimal indice :\n \n",optimal_n)
-    print("\n scores :\n \n", subset_scores[optimal_n])
+    print("\n score :\n \n", subset_scores[optimal_n])
+    print("\n optimal n:\n \n", n_neighbors[optimal_n])
 
-    #plot 3 a
+    # Accuracy plots
+
     test_set_size = 500
     training_set_sizes = [50, 150, 250, 350, 450, 500]
     optimal_n = []
 
     for k, i in enumerate(training_set_sizes):
-        subset_neighbors = [(j+1) for j in range(i)]
+        subset_neighbors = [(j+1) for j in range(i)] # Builds an array with every number of neighbours possible
         results = np.zeros(len(subset_neighbors))
 
+        # Computes the accuracy for every possible number of neighbours
+        # for a given training set size.
         for l, n in enumerate(subset_neighbors):
             results[l] = q3(40, n, i)
 
         plt.plot(subset_neighbors, results)
         optimal_n.append(np.argmax(results))
         print("\n Optimal n : ", np.argmax(results), "for training set size of : ", i)
-        plt.title('Accuracy for ' + str(i))
+        plt.title('Accuracy for ' + str(i) + ' training samples')
         plt.xlabel('Number of neighbours')
-        plt.ylabel('Accuracy (%)')
+        plt.ylabel('Accuracy')
         plt.savefig('accuracy_' + str(i) + '.pdf')
         plt.clf()
 
