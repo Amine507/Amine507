@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     for i, n in enumerate(n_neighbors):
         acc_scores[i], knn_classifier, X_l, y_l = q1(50, n)
-        plot_boundary('n_neighbors={}'.format(n_neighbors[i]), knn_classifier,X_l, y_l, mesh_step_size=0.1, title="k-NN with number of neighbors = "+str(n))
+        plot_boundary('n_neighbors={}'.format(n_neighbors[i]), knn_classifier,X_l, y_l, mesh_step_size=0.1, title=str(n)+"-NN")
     print("\n scores :\n \n", acc_scores)
 
     # Ten-fold cross validation
